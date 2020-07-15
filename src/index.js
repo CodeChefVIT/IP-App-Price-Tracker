@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose')
-require("dotenv").config();
+require("dotenv").config({path:"../.env"});
 // require('./db/mongoose')  
 const { MongoClient, ObjectID } = require('mongodb')
 const userRouter = require('./routers/user')
@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 3000;
 const app = express()
 
 //connecting to database
-const dbURI = "mongodb+srv://tanya:8447794252@cluster0-ef5hr.mongodb.net/ipprice?retryWrites=true&w=majority";
+const dbURI=process.env.dbURI
+
 const databaseName = "ipprice";
 
 mongoose

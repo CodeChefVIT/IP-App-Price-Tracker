@@ -25,6 +25,7 @@ const taskSchema = new mongoose.Schema({
     },
     electricity:{
         type:Number,
+
         default:0,
         validate(value){
            if(value<0){
@@ -80,3 +81,6 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema)
 
 module.exports = Task
+
+
+
