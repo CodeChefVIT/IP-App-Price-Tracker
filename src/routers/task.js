@@ -10,7 +10,7 @@ router.post('/tasks', auth, async (req, res) => {
         ...req.body,
         owner: req.user._id
     })
-    task.totalDaySpent= task.water+task.apparel+task.accessories+task.electricity+task.HouseRent+task.furniture
+    task.totalDaySpent= task.water+task.apparel+task.accessories+task.electricity+task.HouseRent+task.furniture+task.grocery+task.medical+task.miscellaneous
 
     try {
         await task.save()
