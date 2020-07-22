@@ -50,7 +50,7 @@ router.get('/tasks', auth, async (req, res) => {
     }
 })
 
-//get a particualr task by task id
+//get a particular day by id
 router.get('/tasks/:id', auth, async (req, res) => {
     const _id = req.params.id
 
@@ -66,6 +66,23 @@ router.get('/tasks/:id', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+router.get('/taskDays', auth, async (req, res) => {
+    const {day} = req.body
+    const task = await Task.findOne({day,owner:req.user._id})
+    if(!task){
+        res.status(400).json({
+            message:"server error"
+
+        })
+    }
+    res.status(200).json({
+        message:"found",
+        task
+    })
+})
+
+
 
 //update
 router.patch('/tasks/:id', auth, async (req, res) => {
