@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:price_tracker/screens/register_screen.dart';
+import 'package:price_tracker/providers/Auth.dart';
+import 'package:provider/provider.dart';
+import './Tracker_screen.dart';
+
 
 class LoginScreen 
  extends StatefulWidget {
@@ -12,15 +16,25 @@ class LoginScreenState extends State<LoginScreen>
 {
   final GlobalKey<FormState> _formKey = GlobalKey();
    Map<String, String> _userData = {};
+   bool passwordVisible=true;
    Future<void> submit() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     print(_userData);
-    
+     try {
+      await Provider.of<Auth>(context, listen: false).login(_userData);
+      Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (ctx) => Tracker_screen()));
+      
+    } catch(e)
+    {
+      print(e);
+    }
   }
-
+   
   
   @override
   Widget build(BuildContext context) {
@@ -66,7 +80,7 @@ class LoginScreenState extends State<LoginScreen>
                          {
                          return 'This field is empty.';
                         }
-                        return '';
+                       
                       },
                       onSaved: (value) {
                         _userData['email'] = value;
@@ -79,9 +93,16 @@ class LoginScreenState extends State<LoginScreen>
                   Container(
                     width: 300,
                     child: TextFormField(
-                      obscureText: true,
+                      obscureText: passwordVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        suffixIcon: IconButton(icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility,),
+                                     onPressed:() {
+                                   setState(() {
+                                    passwordVisible = !passwordVisible;
+                                });
+                                },
+                                ), 
                         
                       ),
                       validator: (value) 
@@ -89,7 +110,7 @@ class LoginScreenState extends State<LoginScreen>
                         if (value == '') {
                            return 'This field is empty.';
                         }
-                        return '';
+                     
                       },
                       onSaved: (value) {
                         _userData['password'] = value;
@@ -115,6 +136,7 @@ class LoginScreenState extends State<LoginScreen>
                   SizedBox(
                     height: 30,
                   ),
+                  
                   MaterialButton(
                     color: Colors.cyan[100],
                     minWidth: 150,
@@ -143,5 +165,15 @@ class LoginScreenState extends State<LoginScreen>
     );
   }
 }
+
+//void _filePicker()
+//{
+
+//      List<File> files = await FilePicker.getMultiFile(
+  //        type: FileType.custom,
+    //      allowedExtensions: ['jpg', 'pdf', 'doc'],
+      //  );
+   //}
+
 
  
