@@ -82,6 +82,22 @@ router.get('/taskDays', auth, async (req, res) => {
     })
 })
 
+//get day data via params
+router.get('/taskDays/:day', auth, async (req, res) => {
+    const {day} = req.params
+    const task = await Task.findOne({day,owner:req.user._id})
+    if(!task){
+        res.status(400).json({
+            message:"server error"
+
+        })
+    }
+    res.status(200).json({
+        message:"found",
+        task
+    })
+})
+
 
 
 //update
