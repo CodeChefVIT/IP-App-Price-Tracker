@@ -132,6 +132,23 @@ class Auth with ChangeNotifier
       throw e;
     }
   }
+  Future<void> deleteUser() async
+  {
+final url ='https://api-linking.herokuapp.com/users/me';
+try{
+  final response= await http.delete(url);
+  if(response.statusCode==200)
+  {
+    logout();
+  }
+  else{
+     throw HttpException('Could not be completed');
+  }
+}
+catch (e) {
+      throw e;
+    }
+  }
 
    Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -140,12 +157,37 @@ class Auth with ChangeNotifier
     _email = null;
     notifyListeners();
   }
+  Future<void> getDetails() async
+  {
+    print('one');
+    final url="https://api-linking.herokuapp.com/tasks";
+    try{
+      final response = await http.get(url);
+    print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 201) {
+       final resBody = json.decode(response.body);
+       _name=resBody['name'];
+       _age=resBody['age'];
+       _email=resBody['email'];
+       _income=resBody['income'];
+       notifyListeners();
+      }
+       else {
+        throw HttpException('Could not be completed');
+      }}
+    catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     print('object');
     if (!prefs.containsKey('userData')) {
       return false;
     }
+     await getDetails();
     final getUserData =
         json.decode(prefs.getString('userData')) as Map<String, Object>;
     _token = getUserData['token'];
@@ -162,11 +204,11 @@ Future<void> tracker(Map<String, String> userdata) async {
     print('one');
     try {
       final response = await http.post(
-        url,     
+        url,  
         headers: {
           'Content-Type': 'application/json',
         },
-        body: json.encode(userdata),
+        body:json.encode(userdata),
       );
       print(response.statusCode);
       print(response.body);
@@ -210,6 +252,28 @@ Future<void> tracker(Map<String, String> userdata) async {
       throw e;
     }
   }
+  Future<dynamic> search(String day ) async {
+    final url = 'https://api-linking.herokuapp.com/taskDays/$day';
+    print('one');
+    try {
+      final response = await http.get(
+        url,  
+           );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 201) {
+       final resBody = json.decode(response.body);
+      return resBody;
+      } 
+      else {
+        throw HttpException('Could not be completed');
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
 }
 
 
