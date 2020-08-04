@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:price_tracker/providers/Auth.dart';
 import 'package:price_tracker/screens/Tracker_screen.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,17 @@ class _ProfileState extends State<Profile> {
     {
       print(e);
     }
+   }
+   Future<void> delete() async
+   {
+     try {
+await Provider.of<Auth>(context, listen: false).deleteUser();
+print('success');
+     }
+     catch(e)
+     {
+       print(e);
+     }
    }
 
   @override
@@ -125,6 +137,24 @@ class _ProfileState extends State<Profile> {
                     ),
                    
                     onPressed: submit,
+                  
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+               MaterialButton(
+                     minWidth: 150,
+                    height: 50,
+                     color: Colors.cyan[100],
+                    child: Text(
+                      'DELETE ACCOUNT',
+                      style: TextStyle(
+                        color: Colors.teal[700],
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                    ),
+                   
+                    onPressed: delete,
                   
                   ),
               
