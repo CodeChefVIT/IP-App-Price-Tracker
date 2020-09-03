@@ -118,7 +118,7 @@ router.get('/tasksDays/:day', auth, async (req, res) => {
 //update
 router.patch('/tasks/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['day','Maxday','apparel','accessories','grocery',' medical','Maxmedical','miscellaneous',' Maxmiscellaneous','Maxwater','MaxHouseRent','electricity','water','HouseRent','furniture','Maxapparel','Maxgrocery','Maxaccessories','Maxelectricity','Maxfurniture']
+    const allowedUpdates = ['day','Maxday','apparel','accessories','grocery',' medical','miscellaneous','electricity','water','HouseRent','furniture']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
