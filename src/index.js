@@ -6,6 +6,7 @@ require("dotenv").config({path:"../.env"});
 const { MongoClient, ObjectID } = require('mongodb')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
+const budgetRouter = require('./routers/budget')
 const PORT = process.env.PORT || 3000;
 
 const app = express()
@@ -51,6 +52,7 @@ app.use(bodyParser.json());
 app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
+app.use(budgetRouter)
 
 
 

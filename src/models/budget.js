@@ -1,20 +1,8 @@
 const mongoose = require('mongoose')
 
-const taskSchema = new mongoose.Schema({
-    day:{
-        type:String,
-        required:true
-    },
-    Maxday:{
-        type:Number,
-        default:0,
-        validate(value){
-           if(value<0){
-               throw new Error('Must be postive')
-           }
-      }
-    },
-    apparel:{
+const budgetSchema = new mongoose.Schema({
+    
+    Maxapparel:{
         type:Number,
         default:0,
         validate(value){
@@ -24,7 +12,17 @@ const taskSchema = new mongoose.Schema({
       }
     },
    
-    accessories:{
+    Maxaccessories:{
+        type:Number,
+        default:0,
+        validate(value){
+           if(value<0){
+               throw new Error('Must be postive')
+           }
+      }
+    },
+   
+    Maxgrocery:{
         type:Number,
         default:0,
         validate(value){
@@ -34,37 +32,7 @@ const taskSchema = new mongoose.Schema({
       }
     },
   
-    grocery:{
-        type:Number,
-        default:0,
-        validate(value){
-           if(value<0){
-               throw new Error('Must be postive')
-           }
-      }
-    },
-   
-    medical:{
-        type:Number,
-        default:0,
-        validate(value){
-           if(value<0){
-               throw new Error('Must be postive')
-           }
-      }
-    },
-   
-    miscellaneous:{
-        type:Number,
-        default:0,
-        validate(value){
-           if(value<0){
-               throw new Error('Must be postive')
-           }
-      }
-    },
-   
-    electricity:{
+    Maxmedical:{
         type:Number,
         default:0,
         validate(value){
@@ -74,7 +42,7 @@ const taskSchema = new mongoose.Schema({
       }
     },
   
-    water:{
+    Maxmiscellaneous:{
         type:Number,
         default:0,
         validate(value){
@@ -84,7 +52,27 @@ const taskSchema = new mongoose.Schema({
       }
     },
    
-   HouseRent:{
+    Maxelectricity:{
+        type:Number,
+        default:0,
+        validate(value){
+           if(value<0){
+               throw new Error('Must be postive')
+           }
+      }
+    },
+  
+    Maxwater:{
+        type:Number,
+        default:0,
+        validate(value){
+           if(value<0){
+               throw new Error('Must be postive')
+           }
+      }
+    },
+  
+    MaxHouseRent:{
         type:Number,
         default:0,
         validate(value){
@@ -94,7 +82,7 @@ const taskSchema = new mongoose.Schema({
       }
     },
    
-    furniture:{
+    Maxfurniture:{
         type:Number,
         default:0,
         validate(value){
@@ -104,15 +92,6 @@ const taskSchema = new mongoose.Schema({
       }
     },
    
-    totalDaySpent:{
-        type:Number,
-        default:0,
-        validate(value){
-           if(value<0){
-               throw new Error('Must be postive')
-           }
-      }
-    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -122,6 +101,6 @@ const taskSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Task = mongoose.model('Task', taskSchema)
+const Budget = mongoose.model('Budget', budgetSchema)
 
-module.exports = Task
+module.exports = Budget
