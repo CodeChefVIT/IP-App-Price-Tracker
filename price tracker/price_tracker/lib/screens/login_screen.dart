@@ -3,6 +3,8 @@ import 'package:price_tracker/screens/register_screen.dart';
 import 'package:price_tracker/providers/Auth.dart';
 import 'package:provider/provider.dart';
 import './Tracker_screen.dart';
+import './GetDaysInfo.dart';
+import './Max.dart';
 
 
 class LoginScreen 

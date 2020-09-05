@@ -6,6 +6,7 @@ import 'package:price_tracker/providers/Auth.dart';
 import './screens/Tracker_screen.dart';
 import './screens/Search.dart';
 import './utilities/Loadingscreen.dart';
+import './screens/GetDaysInfo.dart';
 
 void main() {
   runApp(MyApp());

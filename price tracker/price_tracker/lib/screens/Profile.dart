@@ -14,6 +14,7 @@ class Profile extends StatefulWidget {
 
 
 class _ProfileState extends State<Profile> {
+   final GlobalKey<FormState> _formKey = GlobalKey();
   final Map<String,String> userData ={};
   final nameController =TextEditingController();
  final ageController =TextEditingController();
@@ -22,8 +23,13 @@ class _ProfileState extends State<Profile> {
 
    Future<void> submit() async
    {
+     if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
       try {
         print('enter');
+        print(userData);
       await Provider.of<Auth>(context, listen: false).Profile(userData);
       print('success');
       
@@ -94,71 +100,74 @@ print('success');
 
       body: SafeArea(child: 
       SingleChildScrollView(
-        child:Container(
-        padding:EdgeInsets.all(15.0),
-        child:
-          Column(
-            children: <Widget>[
-              ProfileContainer(text: 'NAME',controller: nameController,
-               onChanged: (value)
-               { userData['name']=value ;
-               },),
-              ProfileContainer(text: 'AGE',controller: ageController,
-              onChanged: (value)
-              {
-                userData['age']=value;
-              },
-              ),
+        child:Form(
+          key: _formKey,
+                  child: Container(
+          padding:EdgeInsets.all(15.0),
+          child:
+            Column(
+              children: <Widget>[
+                ProfileContainer(text: 'NAME',controller: nameController,
+                 onSaved: (value)
+                 { userData['name']=value ;
+                 },),
+                ProfileContainer(text: 'AGE',controller: ageController,
+                onSaved: (value)
+                {
+                  userData['age']=value;
+                },
+                ),
       
-              ProfileContainer(text: 'INCOME',controller: incomeController,
-              onChanged: (value)
-              {
-                userData['income']=value;
-              },
-              ),
-              ProfileContainer(text: 'Email',controller: emailController,
-              onChanged: (value)
-              {
-                userData['email']=value;
-              },
-              ),
+                ProfileContainer(text: 'INCOME',controller: incomeController,
+                onSaved: (value)
+                {
+                  userData['income']=value;
+                },
+                ),
+                ProfileContainer(text: 'Email',controller: emailController,
+                onSaved: (value)
+                {
+                  userData['email']=value;
+                },
+                ),
 
-              SizedBox(height: 30.0,),
-               MaterialButton(
-                     minWidth: 150,
-                    height: 50,
-                     color: Colors.cyan[100],
-                    child: Text(
-                      'CHANGE DETAILS',
-                      style: TextStyle(
-                        color: Colors.teal[700],
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
+                SizedBox(height: 30.0,),
+                 MaterialButton(
+                       minWidth: 150,
+                      height: 50,
+                       color: Colors.cyan[100],
+                      child: Text(
+                        'CHANGE DETAILS',
+                        style: TextStyle(
+                          color: Colors.teal[700],
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
+                      ),
+                     
+                      onPressed: submit,
+                    
                     ),
-                   
-                    onPressed: submit,
-                  
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-               MaterialButton(
-                     minWidth: 150,
-                    height: 50,
-                     color: Colors.cyan[100],
-                    child: Text(
-                      'DELETE ACCOUNT',
-                      style: TextStyle(
-                        color: Colors.teal[700],
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
+                    SizedBox(
+                      height: 15.0,
                     ),
-                   
-                    onPressed: delete,
-                  
-                  ),
-              
-            ],
+                 MaterialButton(
+                       minWidth: 150,
+                      height: 50,
+                       color: Colors.cyan[100],
+                      child: Text(
+                        'DELETE ACCOUNT',
+                        style: TextStyle(
+                          color: Colors.teal[700],
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
+                      ),
+                     
+                      onPressed: delete,
+                    
+                    ),
+                
+              ],
+            ),
           ),
         ), 
       ),),
@@ -167,10 +176,10 @@ print('success');
   }
 }
 class ProfileContainer extends StatelessWidget {
-  ProfileContainer({this.text,this.controller,this.onChanged});
+  ProfileContainer({this.text,this.controller,this.onSaved});
   final String text;
   final TextEditingController controller;
-  final Function onChanged;
+  final Function onSaved;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -185,11 +194,11 @@ class ProfileContainer extends StatelessWidget {
                     ),
                     Text(text,style :TextStyle(color:Colors.teal ,fontWeight: FontWeight.w800,fontSize: 20.0)),
                         SizedBox(height: 5.0,),
-                        TextField(
+                        TextFormField(
                           
                           controller: controller,
                           decoration: InputDecoration(),
-                          onChanged: onChanged,
+                          onSaved: onSaved,
                             
                           
                         ),

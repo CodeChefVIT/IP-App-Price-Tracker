@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:price_tracker/screens/GetDaysInfo.dart';
 import 'package:price_tracker/screens/Profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -19,6 +20,8 @@ class Auth with ChangeNotifier
  static  int _age;
    static int _income;
     static int _total;
+    static int _maxapparel;
+    static int _maxgro; static int _maxmed; static int _maxmis;
 
   static String email() 
   {
@@ -47,6 +50,8 @@ class Auth with ChangeNotifier
    bool get isAuth {
     return token != null;
   }
+  int  gro() => _maxgro;
+  int  med() => _maxmed; int  app() => _maxapparel; int  mis() => _maxmis;
 
 
   Future<void> login( Map<String, String> userData) async {
@@ -72,6 +77,7 @@ class Auth with ChangeNotifier
         _income=resBody['user']['income'];
         
         _name=resBody['user']['name'];
+      
         
       
         final prefs = await SharedPreferences.getInstance();
@@ -86,6 +92,7 @@ class Auth with ChangeNotifier
         
         );
         await prefs.setString('userData', _prefsData);
+        print(_token);
         print ('successful') ;
         notifyListeners();
       } 
@@ -134,7 +141,7 @@ class Auth with ChangeNotifier
   }
   Future<void> deleteUser() async
   {
-final url ='https://api-linking.herokuapp.com/users/me';
+final url ='https://ipprice-tracker-api.herokuapp.com/users/me';
 try{
   final response= await http.delete(url);
   if(response.statusCode==200)
@@ -142,6 +149,7 @@ try{
     logout();
   }
   else{
+    print(response.statusCode);
      throw HttpException('Could not be completed');
   }
 }
@@ -160,7 +168,7 @@ catch (e) {
   Future<void> getDetails() async
   {
     print('one');
-    final url="https://api-linking.herokuapp.com/tasks";
+    final url="https://ipprice-tracker-api.herokuapp.com/tasks";
     try{
       final response = await http.get(url);
     print(response.statusCode);
@@ -200,16 +208,17 @@ catch (e) {
   }
 
 Future<void> tracker(Map<String, String> userdata) async {
-    final url = 'https://api-linking.herokuapp.com/tasks';
-    print('one');
+    final url = 'https://ipprice-tracker-api.herokuapp.com/tasks';
     try {
       final response = await http.post(
         url,  
-        headers: {
+         headers: {
           'Content-Type': 'application/json',
-        },
-        body:json.encode(userdata),
+          'Token': _token,
+        },	
+	         body: json.encode(userdata),
       );
+      print(url);
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 201) {
@@ -225,19 +234,20 @@ Future<void> tracker(Map<String, String> userdata) async {
     }
   }
   Future<void> Profile(Map<String, String> userdata) async {
-    final url = 'https://api-linking.herokuapp.com/users/me';
+    final url = 'https://ipprice-tracker-api.herokuapp.com/users/me';
     print('entered');
     try {
       final response = await http.patch(
         url,     
-         headers: {
+        headers: {
           'Content-Type': 'application/json',
-        },
-        body: json.encode(userdata),
+        },	
+	         body: json.encode(userdata),
+
       );
       print(response.statusCode);
       print(response.body);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
       final resBody = json.decode(response.body);
       _name=resBody['name'];
       _email=resBody['email'];
@@ -253,7 +263,7 @@ Future<void> tracker(Map<String, String> userdata) async {
     }
   }
   Future<dynamic> search(String day ) async {
-    final url = 'https://api-linking.herokuapp.com/taskDays/$day';
+    final url = 'https://ipprice-tracker-api.herokuapp.com/taskDays/$day';
     print('one');
     try {
       final response = await http.get(
@@ -261,7 +271,7 @@ Future<void> tracker(Map<String, String> userdata) async {
            );
       print(response.statusCode);
       print(response.body);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
        final resBody = json.decode(response.body);
       return resBody;
       } 
@@ -273,8 +283,108 @@ Future<void> tracker(Map<String, String> userdata) async {
     }
   }
 
+   Future<dynamic> Upload(var image ) async {
+    final url = 'https://ipprice-tracker-api.herokuapp.com/users/me/avatar';
+    print('one');
+    try {
+      final response = await http.post(
+        url,   
+        body:json.encode(image)
+           );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+       print('successful');
+      } 
+      else {
+        throw HttpException('Could not be completed');
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<dynamic> GetDaysInfo(String day ) async {
+    final url = 'https://ipprice-tracker-api.herokuapp.com/tasksDays/$day';
+    print('one');
+    try {
+      final response = await http.get(
+        url,  
+           );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+       final resBody = json.decode(response.body);
+      return resBody;
+      } 
+      else {
+        throw HttpException('Could not be completed');
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+  Future<void> getMax() async
+  {
+    print('one');
+    final url="https://ipprice-tracker-api.herokuapp.com/budgets";
+    try{
+      final response = await http.get(url);
+    print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+       final resBody = json.decode(response.body);
+       _maxapparel=resBody['Maxapparel'];
+       _maxgro=resBody['Maxgrocery'];
+       _maxmed=resBody['Maxmedical'];
+       _maxmis=resBody['Maxmiscellaneous'];
+       notifyListeners();
+      }
+       else {
+        throw HttpException('Could not be completed');
+      }}
+    catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> inputMax(Map<String, String> userdata) async {
+    final url = 'https://ipprice-tracker-api.herokuapp.com/budgets';
+    print('entered');
+    try {
+      final response = await http.post(
+        url,     
+        headers: {
+          'Content-Type': 'application/json',
+        },	
+	         body: json.encode(userdata),
+
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 201) {
+      final resBody = json.decode(response.body);
+      notifyListeners();
+      } 
+      else {
+        throw HttpException('Could not be completed');
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
 
 }
+//"name":userdata['name'],
+	//       "income":userdata['income'],
+	  //     "age":userdata['age'],
+	    //    "email":userdata['email'],   
+      // "day":userdata['day'],
+    //"apparel": userdata['apparel'],
+    //"grocery": userdata['grocery'],
+    //"medical": userdata['medical'],
+    //"miscellaneous": userdata['miscellaneous'],
 
 
 
