@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:price_tracker/providers/Auth.dart';
 import 'package:provider/provider.dart';
+import './GetDaysInfo.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  bool number = false ;
   String _day;
  String _apparel,_medical, _grocery,_miscelleneous;
  final GlobalKey<FormState> _formKey = GlobalKey();
@@ -20,10 +22,12 @@ class _SearchState extends State<Search> {
      try {
         
      final body = await Provider.of<Auth>(context, listen: false ).search(day);
-     _apparel=body['apparel'];
-     _grocery=body['grocery'];
-     _medical=body['medical'];
-     _miscelleneous=body['miscellaneous'];
+      _apparel= await body['apparel'];
+     _grocery=await body['grocery'];
+     _medical= await body['medical'];
+     _miscelleneous= await body['miscellaneous'];
+     number =true ;
+
       
     } catch(e)
     {
@@ -100,6 +104,16 @@ String selectedDay = 'monday';
                         builder: (ctx) => Tracker_screen(),),
         );},
                         ),
+             actions: <Widget>[
+               IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: ()  => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (ctx) => GetDaysInfo(),
+                      ),
+                      )
+            ),
+             ],           
       ),
       body: SafeArea(
         child:  Container(
@@ -131,13 +145,13 @@ String selectedDay = 'monday';
                 child: Platform.isIOS ? iOSPicker() : androidDropdown(),
             ),],
             ),
-            Expense(text: 'APPAREL', ),
+            Expense(text: 'APPAREL',child: number?Text(_apparel):null ),
             SizedBox(height: 10.0),
-            Expense(text: 'MEDICAL', ),
+            Expense(text: 'MEDICAL',child: number?Text(_medical):null, ),
             SizedBox(height: 10.0),
-            Expense(text: 'GROCERY', ),
+            Expense(text: 'GROCERY',child:number? Text(_grocery):null),
             SizedBox(height: 10.0),
-            Expense(text: 'MISCELLANEOUS', ),
+            Expense(text: 'MISCELLANEOUS',child:number? Text(_miscelleneous):null ),
 
                   ],
               ),
@@ -153,15 +167,17 @@ String selectedDay = 'monday';
   }
 }
 class Expense extends StatelessWidget {
-  Expense({this.text,this.amount});
+  Expense({this.text,this.amount,this.child});
   final String text;
   final String amount;
+  final Widget child;
   @override
   Widget build(BuildContext context) {
     return Card(
           child: ListTile(
         
       title: Text(text,style: TextStyle(color: Colors.teal),),
+      trailing: child,
       
       ),
     );

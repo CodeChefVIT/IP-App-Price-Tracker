@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
+import 'package:price_tracker/screens/Max.dart';
 import './Profile.dart';
 import './Search.dart';
 import 'package:price_tracker/providers/Auth.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Tracker_screen extends StatefulWidget {
   @override
@@ -16,7 +18,11 @@ class Tracker_screenState extends State<Tracker_screen>
 {
   final GlobalKey<FormState> _formKey = GlobalKey();
    Map<String, String> _userData = {};
+   
    final totalcontroller=TextEditingController();
+   var _image;
+   
+
 
    Future<void > submit() async
    {
@@ -32,7 +38,19 @@ class Tracker_screenState extends State<Tracker_screen>
       print(e);
     }
   }
-   
+  Future<void> getImage() async {
+  var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  setState(() {
+    _image = image;
+  });
+  try {
+      await Provider.of<Auth>(context, listen: false).Upload(_image);
+
+    } catch(e)
+    {
+      print(e);
+    }
+}
    List<String> Days = [
   'monday',
   'tuesday',
@@ -112,6 +130,15 @@ String selectedDay = 'monday';
                       ),
                       )
             ),
+             IconButton(
+            icon: const Icon(Icons.attach_money),
+            onPressed: ()  => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (ctx) => Max(),
+                      ),
+                      )
+            ),
+            
             ],
       backgroundColor: Colors.teal[800],
       ),
@@ -124,85 +151,92 @@ String selectedDay = 'monday';
                child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[ Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(' CHOOSE DAY',
-                    style: TextStyle(
-                        fontSize:18.0,
-                        fontWeight: FontWeight.w800,
-                        color:Colors.teal,
-                    ),),
-                    SizedBox(
-                        width:50.0,
-                    ),
-                
-                 Container(
-                height: 100.0,
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(30.0),
-                
-                child: Platform.isIOS ? iOSPicker() : androidDropdown(),
-            ),],
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Text(' ENTER AMOUNT SPENT ',
-             style: TextStyle(fontSize: 19.0,
-              fontWeight: FontWeight.w800,
-              color: Colors.teal),),
-              
-                           CostInput(text:'Apparel',child: TextFormField( 
-                        onSaved: (value){
-                          _userData['apparel']=value;},),),
-         CostInput(text:'Grocery',child: TextFormField( 
-                        onSaved: (value){
-                          _userData['grocery']=value;},),),
-         CostInput(text:'Medical',child: TextFormField( 
-                        onSaved: (value){
-                          _userData['medical']=value;},),),
-         CostInput(text:'Miscellaneous',child: TextFormField( 
-                        onSaved: (value){
-                          _userData['miscellaneous']=value;},),),
-
-                   Center(
-                     child: MaterialButton(
-                         
-                        minWidth: 150,
-                        height: 50,
-                         color: Colors.cyan[100],
-                        child: Text(
-                          'GET TOTAL',
-                          style: TextStyle(
-                            color: Colors.teal[700],
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold),
+                  children: 
+         <Widget>[ Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(' CHOOSE DAY',
+                        style: TextStyle(
+                            fontSize:18.0,
+                            fontWeight: FontWeight.w800,
+                            color:Colors.teal,
+                        ),),
+                        SizedBox(
+                            width:50.0,
                         ),
-                     
-                        onPressed: submit,
-                  
-                  ),
-                   ),
-                    CostInput(text:'TOTAL',child: TextField( 
-                        controller: totalcontroller,
-                        onSubmitted: (value){
-                          _userData['TOTAL']=value;
-                          },),
-                          ),
-
-                  
-                          
-        
-            
-              
-        
-                              ],
-              ),
-            
+                     Container(
+                    height: 100.0,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(30.0),
+                    child: Platform.isIOS ? iOSPicker() : androidDropdown(),
+                ),],
+    
+                ),
+    
+                SizedBox(
+    
+                  height: 20.0,
+    
+                ),
+    
+                Text(' ENTER AMOUNT SPENT ',
+                 style: TextStyle(fontSize: 19.0,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.teal),),
+                               CostInput(text:'Apparel',child: TextFormField( 
+                            onSaved: (value){
+                              _userData['apparel']=value;},),),
+             CostInput(text:'Grocery',child: TextFormField( 
+                            onSaved: (value){
+                              _userData['grocery']=value;},),),
+             CostInput(text:'Medical',child: TextFormField( 
+                            onSaved: (value){
+                              _userData['medical']=value;},),),
+             CostInput(text:'Miscellaneous',child: TextFormField( 
+                            onSaved: (value){
+                              _userData['miscellaneous']=value;},),),
+                              SizedBox(height:15.0),
+                              Row(
+                                children:<Widget>[
+                                 
+                              IconButton(
+                                icon: Icon(Icons.attach_file),
+                               onPressed: getImage ,
+                              ),
+                               Text('Upload Bills'),
+                                ],
+                              ),
+                       Center(
+                         child: MaterialButton(
+                        minWidth: 150,
+                            height: 50,
+                             color: Colors.cyan[100],
+                            child: Text(
+                              'GET TOTAL',
+                              style: TextStyle(
+                                color: Colors.teal[700],
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: submit,
+                      ),
+    
+                       ),
+    
+                        CostInput(text:'TOTAL',child: TextField(
+                            controller: totalcontroller,
+                            onSubmitted: (value){
+                              _userData['TOTAL']=value;
+                              },
+                              ),
+                              ),
+                                  ],
             ),
                       ),
-          ),),)
+          ),
+          ),
+        ),
+      ),
       
     );
   }
@@ -234,4 +268,16 @@ final String text;
               );
   }
 }
+//Future cameraImage() async {
+  //var image = await ImagePicker.pickImage(
+    //source: ImageSource.camera,
+    //maxHeight: 240.0,
+    //maxWidth: 240.0,
+  //);
+//
+  //setState(() {
+    //_image = image;
+  //});
+//}
+
 
