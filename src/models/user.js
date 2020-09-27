@@ -75,9 +75,10 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }],
-    avatar: {
+    avatar: [{
         type: Buffer
-    }
+    }],
+    joinedgroups:[]
 }, {
     timestamps: true
 })
@@ -94,6 +95,12 @@ userSchema.virtual('budgets', {
     foreignField: 'owner'
 })
 
+userSchema.virtual('groups', {
+    ref: 'Group',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
 userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
@@ -101,6 +108,7 @@ userSchema.methods.toJSON = function () {
     delete userObject.password
     delete userObject.tokens
     delete userObject.avatar
+    
 
     return userObject
 }
@@ -155,3 +163,6 @@ const User = mongoose.model('User', userSchema)
 
 module.exports = User
 
+
+
+// heroku logs --tail -a ipprice-tracker-api

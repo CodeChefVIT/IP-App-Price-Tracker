@@ -7,6 +7,7 @@ const { MongoClient, ObjectID } = require('mongodb')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
 const budgetRouter = require('./routers/budget')
+const groupRouter = require('./routers/group')
 const PORT = process.env.PORT || 3000;
 
 const app = express()
@@ -53,6 +54,7 @@ app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
 app.use(budgetRouter)
+app.use(groupRouter)
 
 
 

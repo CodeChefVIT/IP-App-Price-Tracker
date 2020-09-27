@@ -44,6 +44,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
         res.send()
     } catch (e) {
+        console.log(e.toString())
         res.status(500).send()
     }
 })
