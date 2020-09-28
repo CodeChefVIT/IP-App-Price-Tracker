@@ -4,9 +4,11 @@ const mongoose = require('mongoose')
 require("dotenv").config({path:"../.env"});
 // require('./db/mongoose')  
 const { MongoClient, ObjectID } = require('mongodb')
+const groupRouter = require('./routers/group')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
 const budgetRouter = require('./routers/budget')
+
 const PORT = process.env.PORT || 3000;
 
 const app = express()
@@ -53,6 +55,7 @@ app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
 app.use(budgetRouter)
+app.use(groupRouter)
 
 
 
