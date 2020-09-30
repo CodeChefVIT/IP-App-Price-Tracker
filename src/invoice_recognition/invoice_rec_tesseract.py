@@ -137,7 +137,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #Request file, process it and return json file with information
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_file():
     
     if request.method == 'POST':
@@ -170,6 +170,7 @@ def upload_file():
             app_json = json.dumps(result_dic, sort_keys=True)
             #returning json file back 
             return app_json
+
 
 if __name__ == '__main__':
     app.run()
