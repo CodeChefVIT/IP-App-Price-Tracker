@@ -1,1 +1,0 @@
-web: gunicorn app_inv_ocr:app
