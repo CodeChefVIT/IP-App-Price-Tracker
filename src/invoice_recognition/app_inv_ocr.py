@@ -13,5 +13,5 @@ files = {"file": ( open(filename, "rb"))}
 headers = {'authorization': "Bearer {token}"}
 # print(requests.post(url, files=files))
 
-response = requests.request("POST", url, files=files, headers=headers)
+response = requests.request('GET', url, files=files, headers=headers)
 print(response.text)
