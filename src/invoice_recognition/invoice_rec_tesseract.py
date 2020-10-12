@@ -1,14 +1,4 @@
-'''
-ML part for IP-APP-Price-Tracker project
-    OCR invoice recognition using pytesseract module to extract:
-        1. Category of expense
-        2. Total Amount spent
-        3. Tax Amount
-        4. Score(accuracy of OCR)
-'''
-
-#importing necessary modules
-from flask import Flask, request
+from flask import Flask, request, render_template
 import pytesseract
 import os
 import cv2
@@ -17,17 +7,21 @@ import re
 from Levenshtein import distance
 from werkzeug.utils import secure_filename
 
-#local folder to save the image of invoice
-UPLOAD_FOLDER = 'D:/IP-App-Price-Tracker/src/uploads/'   
-ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg'])  #the extensions allowed for images uplaoded
-
 #starting Flask server to get image 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
+
+#path to upload images
+UPLOAD_FOLDER='D:/VIT-Hack-2020/ML/UPLOADS/'
+ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg'])
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-'''
-OCR  Processing Part
-'''
+@app.route("/")
+def index():
+  return render_template("index.html")
+@app.route("/about")
+def about():
+  return render_template("about.html")
 
 #basic dictionary to classify the text extracted from image after OCR processing
 dic = {'category': [],
@@ -37,7 +31,6 @@ dic = {'category': [],
 
 #assigning directory for pytesseract
 pytesseract.pytesseract.tesseract_cmd = r'C:\Users\USER\AppData\Local\Tesseract-OCR\tesseract.exe'
-
 #OCR processing the Image into a string 
 def ocr_process(img, resolution=450, page_seg_method='3'):
     txt=""
@@ -49,19 +42,25 @@ def categories(result_string,dic=dic):
     
     #Categories
     dining=re.findall('(server)|(Food)|(Dining)|(order)|(table)|(restaurant)',result_string, re.IGNORECASE)
-    apparel=re.findall('(shirt)|(pant)|(jeans)|(clothing)|(sleeve)|(men)|(ladies)',result_string,re.IGNORECASE)
+    apparel=re.findall('(shirt)|(pant)|(jeans)|(clothing)|(sleeve)|(men)|(ladies)|(accessories)',result_string,re.IGNORECASE)
     medicine=re.findall('(medical)|(pharmacy)|(hospital)|(doctor)',result_string,re.IGNORECASE)
-    accessories=re.findall('(accesories)|(earring)',result_string,re.IGNORECASE)
+    groceries=re.findall('(convinience)|(grocery)|(market)|(supermarket)',result_string,re.IGNORECASE)
+    transport =re.findall('(travels)|(transport)|(automobiles)|(car)|(bus)|(transportation)',result_string,re.IGNORECASE)
+    entertainment=re.findall('(movie)|(theatre)|(film)|(books)',result_string,re.IGNORECASE)
     
     #Appending the Categories into the dictionary
     if(len(dining)!=0):
-       dic['category'].append('Dining')
+       dic['category'].append('Food')
     elif(len(apparel)!=0):
         dic['category'].append('Apparel')
     elif(len(medicine)!=0):
         dic['category'].append('Medical')
-    elif(len(accessories)!=0):
-        dic['category'].append('Accessories')
+    elif(len(groceries)!=0):
+        dic['category'].append('Groceries')
+    elif(len(transport)!=0):
+        dic['category'].append('Transportation')
+    elif(len(entertainment)!=0):
+        dic['category'].append('Entertainment')
     return dic
 
 #Scoring - removing frequently used words with '%d'
@@ -128,16 +127,14 @@ def amount_parsser(invoice_string, regex_expression, dic=dic):
                     dic['tax'].append(tax)
         return dic                           #return updated Dictionary
 
-'''
-API PART
-'''
+
 #Checking allowed extensions of image
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #Request file, process it and return json file with information
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/uploader', methods=['GET', 'POST'])
 def upload_file():
     
     if request.method == 'POST':
