@@ -14,7 +14,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   bool number = false ;
   String _day;
- String _apparel,_medical, _grocery,_miscelleneous;
+ int _apparel,_medical, _grocery,_miscelleneous;
  final GlobalKey<FormState> _formKey = GlobalKey();
   @override
   Future<void> search(String day) async 
@@ -22,11 +22,20 @@ class _SearchState extends State<Search> {
      try {
         
      final body = await Provider.of<Auth>(context, listen: false ).search(day);
-      _apparel= await body['apparel'];
-     _grocery=await body['grocery'];
-     _medical= await body['medical'];
-     _miscelleneous= await body['miscellaneous'];
+
+     print('came back');
+     setState(() {
+      _apparel= body['task']['apparel'];
+     _grocery=body['task']['grocery'];
+     _medical=  body['task']['medical'];
+     _miscelleneous=  body['task']['miscellaneous'];
+      });
      number =true ;
+     print('true');
+     print(_apparel);
+     print(_grocery);
+     print(_medical);
+     print(_miscelleneous);
 
       
     } catch(e)
@@ -145,13 +154,13 @@ String selectedDay = 'monday';
                 child: Platform.isIOS ? iOSPicker() : androidDropdown(),
             ),],
             ),
-            Expense(text: 'APPAREL',child: number?Text(_apparel):null ),
+            Expense(text: 'APPAREL',child: number?Text(_apparel.toString()):null ),
             SizedBox(height: 10.0),
-            Expense(text: 'MEDICAL',child: number?Text(_medical):null, ),
+            Expense(text: 'MEDICAL',child: number?Text(_medical.toString()):null, ),
             SizedBox(height: 10.0),
-            Expense(text: 'GROCERY',child:number? Text(_grocery):null),
+            Expense(text: 'GROCERY',child:number? Text(_grocery.toString()):null),
             SizedBox(height: 10.0),
-            Expense(text: 'MISCELLANEOUS',child:number? Text(_miscelleneous):null ),
+            Expense(text: 'MISCELLANEOUS',child:number? Text(_miscelleneous.toString()):null ),
 
                   ],
               ),

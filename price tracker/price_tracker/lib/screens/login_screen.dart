@@ -109,8 +109,8 @@ class LoginScreenState extends State<LoginScreen>
                       ),
                       validator: (value) 
                        {
-                        if (value == '') {
-                           return 'This field is empty.';
+                        if(value.length<8) {
+                                  return 'Minimum 8 characters required';
                         }
                      
                       },

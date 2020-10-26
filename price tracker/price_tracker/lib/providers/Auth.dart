@@ -68,7 +68,7 @@ class Auth with ChangeNotifier
       if (response.statusCode == 200) {
         final resBody = json.decode(response.body);
         
-        _token =  resBody['user']['_id'];
+        _token =  resBody['token'];
       
         _email=  userData['email'];
         
@@ -93,6 +93,7 @@ class Auth with ChangeNotifier
         );
         await prefs.setString('userData', _prefsData);
         print(_token);
+        getMax();   
         print ('successful') ;
         notifyListeners();
       } 
@@ -214,7 +215,7 @@ Future<void> tracker(Map<String, String> userdata) async {
         url,  
          headers: {
           'Content-Type': 'application/json',
-          'Token': _token,
+          'Authorization':'Bearer ' +_token,
         },	
 	         body: json.encode(userdata),
       );
@@ -241,6 +242,7 @@ Future<void> tracker(Map<String, String> userdata) async {
         url,     
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':'Bearer ' +_token,
         },	
 	         body: json.encode(userdata),
 
@@ -268,6 +270,11 @@ Future<void> tracker(Map<String, String> userdata) async {
     try {
       final response = await http.get(
         url,  
+        headers: 
+        {
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer ' +_token,
+        }
            );
       print(response.statusCode);
       print(response.body);
@@ -306,10 +313,13 @@ Future<void> tracker(Map<String, String> userdata) async {
 
   Future<dynamic> GetDaysInfo(String day ) async {
     final url = 'https://ipprice-tracker-api.herokuapp.com/tasksDays/$day';
-    print('one');
+    print('two');
     try {
       final response = await http.get(
         url,  
+        headers: {
+          'Authorization':'Bearer ' +_token,
+        }
            );
       print(response.statusCode);
       print(response.body);
@@ -329,15 +339,20 @@ Future<void> tracker(Map<String, String> userdata) async {
     print('one');
     final url="https://ipprice-tracker-api.herokuapp.com/budgets";
     try{
-      final response = await http.get(url);
+      final response = await http.get(url,
+      headers: {'Authorization':'Bearer ' +_token,});
     print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200) {
        final resBody = json.decode(response.body);
-       _maxapparel=resBody['Maxapparel'];
-       _maxgro=resBody['Maxgrocery'];
-       _maxmed=resBody['Maxmedical'];
-       _maxmis=resBody['Maxmiscellaneous'];
+            int length = resBody.length;
+            print(length);
+            
+       _maxapparel=resBody[length-1]['Maxapparel'];
+       _maxgro=resBody[length-1]['Maxgrocery'];
+       _maxmed=resBody[length-1]['Maxmedical'];
+       _maxmis=resBody[length-1]['Maxmiscellaneous'];
+    
        notifyListeners();
       }
        else {
@@ -356,10 +371,12 @@ Future<void> tracker(Map<String, String> userdata) async {
         url,     
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':'Bearer ' +_token,
         },	
 	         body: json.encode(userdata),
 
       );
+      print(url);
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 201) {

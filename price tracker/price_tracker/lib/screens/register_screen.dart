@@ -149,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Container(
                     width: 300,
                     child: TextFormField(
+                      
                       obscureText: passwordVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -162,10 +163,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         
                       ),
                       validator: (value) {
-                        if (value == '') {
-                          return 'This field is required.';
+                        if(value.length<8) {
+                                  return 'Minimum 8 characters required';
                         }
-                       
                       },
                       onSaved: (value) {
                         _userData['password'] = value;
