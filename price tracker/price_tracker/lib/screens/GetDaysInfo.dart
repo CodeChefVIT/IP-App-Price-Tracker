@@ -20,7 +20,7 @@ class _GetDaysInfoState extends State<GetDaysInfo> {
   
   bool isExpanded=false;
   bool number1=true;
-  List<Map<String,int>>Info=[];
+  List<dynamic>Info=[];
   List<int> list;
   List<String> Days= [
   'monday',
@@ -53,7 +53,8 @@ String _apparel,_medical, _grocery,_miscelleneous;
      try {
         
      final body = await Provider.of<Auth>(context, listen: false ).GetDaysInfo(day);
-      Info= body['tasks'];
+      Info= body['task'];
+      print(body['task']);
       Listfinal();
       
     } catch(e)
@@ -89,6 +90,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected1 = !_selected1;
+              _selected2 =_selected3=_selected4=_selected5=_selected6=_selected7=false;
               searchDay('Monday');
               });
              },
@@ -100,6 +102,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected2 = !_selected2;
+              _selected1 =_selected3=_selected4=_selected5=_selected6=_selected7=false;
               searchDay('Tuesday');
               });
              },
@@ -111,6 +114,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected3 = !_selected3;
+              _selected2 =_selected1=_selected4=_selected5=_selected6=_selected7=false;
               searchDay('wednesday');
               });
              },
@@ -122,6 +126,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected4 = !_selected4;
+              _selected2 =_selected3=_selected1=_selected5=_selected6=_selected7=false;
               searchDay('thursday');
               });
              },
@@ -136,6 +141,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected5 = !_selected5;
+              _selected2 =_selected3=_selected4=_selected1=_selected6=_selected7=false;
               searchDay('friday');
               });
              },
@@ -147,6 +153,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected6 = !_selected6;
+              _selected2 =_selected3=_selected4=_selected5=_selected1=_selected7=false;
               searchDay('Saturday');
               });
              },
@@ -158,6 +165,7 @@ String _apparel,_medical, _grocery,_miscelleneous;
              onSelected: (bool selected) {
                 setState(() {
               _selected7= !_selected7;
+              _selected2 =_selected3=_selected4=_selected5=_selected6=_selected1=false;
               searchDay('Sunday');
               });
              },

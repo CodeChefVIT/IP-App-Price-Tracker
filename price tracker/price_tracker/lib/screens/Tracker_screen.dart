@@ -60,12 +60,12 @@ class Tracker_screenState extends State<Tracker_screen>
   'saturday',
   'sunday',
 ];
-String selectedDay = 'monday';
+String selectedDay;
 
 
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> dropdownItems = [];
-    _userData['day']='monday';
+    
     for (String Day in Days) {
       var newItem = DropdownMenuItem(
         child: Text(Day),
@@ -82,12 +82,13 @@ String selectedDay = 'monday';
           selectedDay = value;
          
           _userData['day']=selectedDay;
+          print(selectedDay);
         });
       },
     );
   }
   CupertinoPicker iOSPicker() {
-    _userData['day']='monday';
+  
     List<Text> pickerItems = [];
     for (String Day in Days) {
       pickerItems.add(Text(Day));

@@ -41,10 +41,11 @@ class _MaxState extends State<Max> {
     super.initState();
     Provider.of<Auth>(context, listen: false).getMax();
     
-   apparelController.text= Provider.of<Auth>(context, listen: false).app().toString();
+   apparelController.text=  Provider.of<Auth>(context, listen: false).app().toString();
    groceriesController.text= Provider.of<Auth>(context, listen: false).gro().toString();
    medicalController.text=Provider.of<Auth>(context, listen: false).med().toString();
    miscellaneousController.text= Provider.of<Auth>(context, listen: false).mis().toString();
+
   }
 
   @override
