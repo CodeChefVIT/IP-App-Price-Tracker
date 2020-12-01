@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pricetracker/screens/loginScreen.dart';
 
 void main() {
@@ -53,12 +54,23 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         canvasColor: Color(0xff000000),
-        accentColor: Color(0xffff4a4a),
-        secondaryHeaderColor: Color(0xffff7070),
+        accentColor: Color(0xff5effa7),
         backgroundColor: Color(0xff212121),
         textTheme: TextTheme(
-          bodyText1: TextStyle(
-            color: Color(0xff212121),
+          headline1: GoogleFonts.montserrat(
+            color: Color(0xff5effa7),
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+          headline2: GoogleFonts.montserrat(
+            color: Color(0xff000000),
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+          bodyText1: GoogleFonts.montserrat(
+            color: Color(0xfff0f0f0),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -66,12 +78,23 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         canvasColor: Color(0xffffffff),
-        accentColor: Color(0xffff4a4a),
-        secondaryHeaderColor: Color(0xffff7070),
-        backgroundColor: Color(0xff212121),
+        accentColor: Color(0xff43e0a7),
+        backgroundColor: Color(0xfff0f0f0),
         textTheme: TextTheme(
-          bodyText1: TextStyle(
-            color: Color(0xff212121),
+          headline1: GoogleFonts.montserrat(
+            color: Color(0xff43e0a7),
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+          headline2: GoogleFonts.montserrat(
+            color: Color(0xffffffff),
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+          bodyText1: GoogleFonts.montserrat(
+            color: Color(0xff141414),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -79,3 +102,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+//00ed6c

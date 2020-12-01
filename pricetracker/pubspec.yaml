@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  google_fonts: ^1.1.1
   flutter:
     sdk: flutter
 
@@ -38,6 +39,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - google_fonts/Montserrat-Medium.ttf
+    - google_fonts/Montserrat-Bold.ttf
+    - google_fonts/Montserrat-Black.ttf
+    - google_fonts/Montserrat-ExtraBold.ttf
+    - google_fonts/Montserrat-Light.ttf
+    - google_fonts/Montserrat-ExtraLight.ttf
+    - google_fonts/Montserrat-Regular.ttf
+    - google_fonts/Montserrat-SemiBold.ttf
+    - google_fonts/Montserrat-Thin.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
