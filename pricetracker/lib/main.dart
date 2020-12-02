@@ -59,17 +59,17 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
           headline1: GoogleFonts.montserrat(
             color: Color(0xff5effa7),
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
+            fontSize: 30,
+            fontWeight: FontWeight.w600,
           ),
           headline2: GoogleFonts.montserrat(
             color: Color(0xff000000),
             fontSize: 24,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
           ),
           bodyText1: GoogleFonts.montserrat(
             color: Color(0xfff0f0f0),
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -83,17 +83,17 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
           headline1: GoogleFonts.montserrat(
             color: Color(0xff43e0a7),
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
+            fontSize: 30,
+            fontWeight: FontWeight.w600,
           ),
           headline2: GoogleFonts.montserrat(
             color: Color(0xffffffff),
             fontSize: 24,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
           ),
           bodyText1: GoogleFonts.montserrat(
             color: Color(0xff141414),
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
         ),
