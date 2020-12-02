@@ -22,6 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Theme.of(context).canvasColor,
         backgroundColor: Theme.of(context).accentColor,
         title: Text(
           "Sign Up",
