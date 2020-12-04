@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__, template_folder='templates')
 
 #path to upload images
-UPLOAD_FOLDER='D:/VIT-Hack-2020/ML/UPLOADS/'
+UPLOAD_FOLDER='UPLOADS/'
 ALLOWED_EXTENSIONS = set([ 'png', 'jpg', 'jpeg'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -30,7 +30,7 @@ dic = {'category': [],
        'tax': []}
 
 #assigning directory for pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\USER\AppData\Local\Tesseract-OCR\tesseract.exe'
+# pytesseract.pytesseract.tesseract_cmd = r'/home/ubuntu/tesseract.exe'
 #OCR processing the Image into a string 
 def ocr_process(img, resolution=450, page_seg_method='3'):
     txt=""
@@ -170,4 +170,4 @@ def upload_file():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=8080)
