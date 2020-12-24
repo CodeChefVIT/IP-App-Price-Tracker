@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 import pytesseract
 import os
 import cv2
@@ -6,6 +6,8 @@ import json
 import re
 from Levenshtein import distance
 from werkzeug.utils import secure_filename
+
+import requests
 
 #starting Flask server to get image 
 app = Flask(__name__, template_folder='templates')
@@ -134,7 +136,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #Request file, process it and return json file with information
-@app.route('/uploader', methods=['GET', 'POST'])
+@app.route('/invoice/uploader', methods=['GET', 'POST'])
 def upload_file():
     
     if request.method == 'POST':
@@ -166,7 +168,11 @@ def upload_file():
             #converting dictionary into json file
             app_json = json.dumps(result_dic, sort_keys=True)
             #returning json file back 
-            return app_json
+            print(app_json)
+
+            r = requests.post('http://localhost:3000/invoice/uploader', json = {"app_data":app_json})
+
+            return redirect('http://localhost:3000/invoice/uploader')
 
 
 if __name__ == '__main__':
