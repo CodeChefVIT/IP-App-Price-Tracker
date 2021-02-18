@@ -1,8 +1,11 @@
+require('dotenv').config()
+
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 const auth = async (req, res, next) => {
     try {
+        console.log(req.header('Authorization'))
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         
@@ -17,7 +20,9 @@ const auth = async (req, res, next) => {
         req.user = user
         next()
     } catch (e) {
-        res.status(401).send({ error: 'Please authenticate.' })
+        console.log(e)
+        res.status(401).send({ error: e })
+        
     }
 }
 

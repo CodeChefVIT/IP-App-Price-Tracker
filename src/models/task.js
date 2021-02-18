@@ -5,6 +5,15 @@ const taskSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    Maxday:{
+        type:Number,
+        default:0,
+        validate(value){
+           if(value<0){
+               throw new Error('Must be postive')
+           }
+      }
+    },
     apparel:{
         type:Number,
         default:0,
@@ -14,6 +23,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
     accessories:{
         type:Number,
         default:0,
@@ -23,6 +33,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+  
     grocery:{
         type:Number,
         default:0,
@@ -32,6 +43,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
     medical:{
         type:Number,
         default:0,
@@ -41,6 +53,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
     miscellaneous:{
         type:Number,
         default:0,
@@ -50,6 +63,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
     electricity:{
         type:Number,
         default:0,
@@ -59,6 +73,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+  
     water:{
         type:Number,
         default:0,
@@ -68,6 +83,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
    HouseRent:{
         type:Number,
         default:0,
@@ -77,6 +93,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
     furniture:{
         type:Number,
         default:0,
@@ -86,6 +103,7 @@ const taskSchema = new mongoose.Schema({
            }
       }
     },
+   
     totalDaySpent:{
         type:Number,
         default:0,
@@ -107,6 +125,3 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema)
 
 module.exports = Task
-
-
-

@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
@@ -75,15 +77,28 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }],
-    avatar: {
+    avatar: [{
         type: Buffer
-    }
+    }],
+    joinedgroups:[]
 }, {
     timestamps: true
 })
 
 userSchema.virtual('tasks', {
     ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+userSchema.virtual('budgets', {
+    ref: 'Budget',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+userSchema.virtual('groups', {
+    ref: 'Group',
     localField: '_id',
     foreignField: 'owner'
 })
@@ -95,6 +110,7 @@ userSchema.methods.toJSON = function () {
     delete userObject.password
     delete userObject.tokens
     delete userObject.avatar
+    
 
     return userObject
 }
@@ -149,3 +165,6 @@ const User = mongoose.model('User', userSchema)
 
 module.exports = User
 
+
+
+// heroku logs --tail -a ipprice-tracker-api

@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
@@ -26,11 +28,13 @@ router.post('/users', async (req, res) => {
 //login
 router.post('/users/login', async (req, res) => {
     try {
+        console.log(req.body)
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         res.send({ user, token })
     } catch (e) {
-        res.status(400).send()
+        console.log(e)
+        res.status(400).send(e)
     }
 })
 
@@ -44,6 +48,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
         res.send()
     } catch (e) {
+        console.log(e.toString())
         res.status(500).send()
     }
 })

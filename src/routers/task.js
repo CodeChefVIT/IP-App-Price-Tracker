@@ -82,12 +82,43 @@ router.get('/taskDays', auth, async (req, res) => {
     })
 })
 
+//get day data via params , gives latest day
+router.get('/taskDays/:day', auth, async (req, res) => {
+    const {day} = req.params
+    const task = await Task.findOne({day,owner:req.user._id})
+    if(!task){
+        res.status(400).json({
+            message:"server error"
+
+        })
+    }
+    res.status(200).json({
+        message:"found",
+        task
+    })
+})
+
+//get all the same days together
+router.get('/tasksDays/:day', auth, async (req, res) => {
+    const {day} = req.params
+    const task = await Task.find({day,owner:req.user._id})
+    if(!task){
+        res.status(400).json({
+            message:"server error"
+
+        })
+    }
+    res.status(200).json({
+        message:"found",
+        task
+    })
+})
 
 
 //update
 router.patch('/tasks/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['day','apparel','accessories','electricity','water','HouseRent','furniture']
+    const allowedUpdates = ['day','Maxday','apparel','accessories','grocery',' medical','miscellaneous','electricity','water','HouseRent','furniture']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
