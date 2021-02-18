@@ -13,5 +13,5 @@ python-Levenshtein==0.12.0
 pytesseract==0.3.6
 opencv-python==4.2.0.34
 tesseract-ocr
-libtesseract-dev
-pillow>=7.1.0 # not directly required, pinned by Snyk to avoid a vulnerability
+libtesseract>=3.04
+libleptonica (>=1.71).
